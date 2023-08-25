@@ -1,4 +1,4 @@
-import { AUTH_LOGIN_FAILURE, AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCESS, AUTH_SIGNUP_FAILURE, AUTH_SIGNUP_REQUEST, AUTH_SIGNUP_SUCCESS } from "./actionTypes"
+import { AUTH_LOGIN_FAILURE, AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCESS, AUTH_SIGNUP_FAILURE, AUTH_SIGNUP_REQUEST, AUTH_SIGNUP_SUCCESS, GET_ALL_USERS } from "./actionTypes"
 
 const initialState = {
     isLoading : false,
@@ -8,7 +8,8 @@ const initialState = {
     signupmsg:"",
     errmsg : "",
     loginmsg:"",
-    username:""
+    username:"",
+    allusers :[]
 }
 
 export const reducer = (state=initialState,{type,payload}) => {
@@ -66,6 +67,14 @@ export const reducer = (state=initialState,{type,payload}) => {
             errmsg : payload,
             isLoading : false,
             isAuth : false
+          }
+        }
+        case GET_ALL_USERS : {
+          return {
+            ...state,
+            isLoading : false,
+            isError : false,
+            allusers : payload
           }
         }
         default : {

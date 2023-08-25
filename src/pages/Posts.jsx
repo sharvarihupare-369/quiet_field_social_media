@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPosts } from "../redux/posts/action";
+import { getPosts, postLike, postUnLike } from "../redux/posts/action";
 import {
   Card,
   CardHeader,
@@ -20,35 +20,62 @@ import { getAllUsers } from "../redux/authentication/action";
 
 
 const Posts = () => {
-  const { posts } = useSelector((store) => store.postReducer);
-  // const { token } = useSelector((store) => store.authReducer);
+
+  let liked = JSON.parse(localStorage.getItem("isLiked")) || false;
+  const { posts,isLiked } = useSelector((store) => store.postReducer);
+  const { allusers } = useSelector((store) => store.authReducer);
   const dispatch = useDispatch();
-  // console.log(posts)
+  // console.log(allusers)
   const token = localStorage.getItem("social-token") || ""
 
+
+  const handleLike = async(id) => {
+    
+    localStorage.setItem("isLiked", JSON.stringify(!liked));
+    if(!liked){
+     await dispatch(postLike(id,token))
+     await dispatch(getPosts());
+    }else{
+     await dispatch(postUnLike(id,token))
+     await dispatch(getPosts());
+    }
+
+  }
+
   useEffect(()=>{
-   getAllUsers(token)
+   dispatch(getAllUsers())
   },[token])
 
   useEffect(() => {
     dispatch(getPosts());
   }, []);
 
+  let name = ""
+
   return (
     <Box>
+    
       {posts.map((post) => {
         {/* console.log(post.author._id) */}
+         {
+            allusers.map((el)=>{
+               if(el._id == post.author._id){
+                  name = el.fullname
+               }
+            })
+            {/* console.log(name) */}
+         }
         return (
-           <Flex key={post._id} justifyContent={"center"}>
-          <Card maxW="md">
+           <Flex  key={post._id} justifyContent={"center"}>
+          <Card  mt="20px" maxW="md">
 
             <CardHeader>
               <Flex spacing="4">
                 <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                  <Avatar name='Segun Adebayo' src='https://bit.ly/sage-adebayo' />
+                  <Avatar name={name} src={name} />
 
                   <Box>
-                    <Heading size='sm'>{post.author.username}</Heading>
+                    <Heading size='md'>{name}</Heading>
                    {/* <Text>Creator, Chakra UI</Text> */}
                  </Box>
                 </Flex>
@@ -77,8 +104,8 @@ const Posts = () => {
                 },
               }}
             >
-              <Button flex="1" variant="ghost" leftIcon={<BiLike />}>
-                Like
+              <Button  style={{background:liked ? "red" : "white" }} flex="1" variant="solid" onClick={()=>handleLike(post._id)}  leftIcon={<BiLike  />}>
+               {post.likes.length !== 0  ?  post.likes.length : ""} Like
               </Button>
               <Button flex="1" variant="ghost" leftIcon={<BiChat />}>
                 Comment

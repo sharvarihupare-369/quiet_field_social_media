@@ -1,9 +1,11 @@
-import { GET_REQUEST, GET_SUCCESS } from "./actionTypes"
+import { GET_FAILURE, GET_REQUEST, GET_SUCCESS, POST_LIKE } from "./actionTypes"
 
 const initialState = {
     isLoading : false,
     isError : false,
-    posts : []
+    posts : [],
+    postlikemsg : "",
+    isLiked:false
 }
 
 export const reducer = (state=initialState,{type,payload}) => {
@@ -23,13 +25,15 @@ export const reducer = (state=initialState,{type,payload}) => {
                 posts : payload
             }
         }
-        case GET_REQUEST : {
+        case GET_FAILURE : {
             return {
                 ...state,
                 isLoading : false,
-                isError : true
+                isError : true,
+                isLiked:false
             }
         }
+      
         default : {
             return state
         }
