@@ -152,7 +152,8 @@ const Sidebar = () => {
 
             <FormControl>
               <FormLabel>Post</FormLabel>
-              <Input type='file' value={postImg}  onChange={(e)=>setPostImg(e.target.value)} />
+              {/* <Input type='file' value={postImg}  onChange={(e)=>setPostImg(e.target.value)} /> */}
+              <Input type="file" value={postImg} onChange={(e)=>setPostImg(e.target.value)} />
             </FormControl>
             {/* <form action="/profile" method="post" >
               <input type="file" name="avatar" />
