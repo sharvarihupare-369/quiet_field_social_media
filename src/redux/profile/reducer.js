@@ -1,75 +1,63 @@
-import { ADD_POST, DELETE_POST, GET_FAILURE, GET_PROFILE_POSTS, GET_REQUEST, GET_SUCCESS, POST_LIKE } from "./actionTypes"
+import { ADD_SUCCESS_PROFILE, DELETE_SUCCESS_PROFILE, GET_FAILURE_PROFILE,  GET_REQUEST_PROFILE, GET_SUCCESS_PROFILE } from "./actionTypes"
 
 const initialState = {
     isLoading : false,
     isError : false,
-    posts : [],
-    postlikemsg : "",
-    isLiked:false,
-    isAdded : false,
-    profileposts : [],
-    isDeleted : false
+    getprofile : {},
+    isProfileAdded : false,
+    isProfileDeleted : false
 }
 
 export const reducer = (state=initialState,{type,payload}) => {
       switch(type){
-        case GET_REQUEST : {
+        case GET_REQUEST_PROFILE : {
             return {
                 ...state,
                 isLoading : true,
                 isError : false,
-                isAdded: false,
-                isDeleted : false
+                isProfileAdded : false,
+                isProfileDeleted : false
             }
         }
 
-        case GET_FAILURE : {
+        case GET_FAILURE_PROFILE : {
             return {
                 ...state,
                 isLoading : false,
                 isError : true,
-                isLiked:false,
-                isAdded: false,
-                isDeleted : false
+                isProfileAdded : false,
+                isProfileDeleted : false
             }
         }
         
-        case GET_SUCCESS : {
+        case  GET_SUCCESS_PROFILE: {
+            // console.log(payload)
             return {
                 ...state,
                 isLoading : false,
                 isError : false,
-                posts : payload
+                getprofile : payload
             }
         }
      
-        case ADD_POST : {
+        case ADD_SUCCESS_PROFILE : {
             return {
                 ...state,
                 isLoading : false,
                 isError : false,
-                isLiked:false,
-                isAdded: true
+                isProfileAdded : true
             }
         }
-        case GET_PROFILE_POSTS : {
+     
+        case DELETE_SUCCESS_PROFILE : {
             return {
                 ...state,
                 isLoading : false,
                 isError : false,
-                profileposts : payload
+                isProfileDeleted : true
             }
         }
 
-
-        case DELETE_POST : {
-            return {
-                ...state,
-                isLoading : false,
-                isError : false,
-                isDeleted : true
-            }
-        }
        
         default : {
             return state

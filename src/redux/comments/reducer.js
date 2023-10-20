@@ -1,14 +1,12 @@
-import { ADD_POST, DELETE_POST, GET_FAILURE, GET_PROFILE_POSTS, GET_REQUEST, GET_SUCCESS, POST_LIKE } from "./actionTypes"
+import { ADD_COMMENT, ADD_COMMENT_REPLY, DELETE_COMMENT, GET_COMMENT, GET_COMMENT_REPLY, GET_FAILURE, GET_REQUEST } from "./actionTypes"
 
 const initialState = {
     isLoading : false,
     isError : false,
-    posts : [],
-    postlikemsg : "",
-    isLiked:false,
-    isAdded : false,
-    profileposts : [],
-    isDeleted : false
+    comments : [],
+    isDeleted : false,
+    isCommentAdded : false,
+    commentreplies : []
 }
 
 export const reducer = (state=initialState,{type,payload}) => {
@@ -18,8 +16,8 @@ export const reducer = (state=initialState,{type,payload}) => {
                 ...state,
                 isLoading : true,
                 isError : false,
-                isAdded: false,
-                isDeleted : false
+                isDeleted : false,
+                isCommentAdded : false
             }
         }
 
@@ -28,46 +26,52 @@ export const reducer = (state=initialState,{type,payload}) => {
                 ...state,
                 isLoading : false,
                 isError : true,
-                isLiked:false,
-                isAdded: false,
-                isDeleted : false
+                isDeleted : false,
+                isCommentAdded : false
             }
         }
         
-        case GET_SUCCESS : {
+        case  GET_COMMENT: {
             return {
                 ...state,
                 isLoading : false,
                 isError : false,
-                posts : payload
+                comments : payload
             }
         }
      
-        case ADD_POST : {
+        case ADD_COMMENT : {
             return {
                 ...state,
                 isLoading : false,
                 isError : false,
-                isLiked:false,
-                isAdded: true
+                isCommentAdded : true
             }
         }
-        case GET_PROFILE_POSTS : {
-            return {
-                ...state,
-                isLoading : false,
-                isError : false,
-                profileposts : payload
-            }
-        }
-
-
-        case DELETE_POST : {
+     
+        case DELETE_COMMENT : {
             return {
                 ...state,
                 isLoading : false,
                 isError : false,
                 isDeleted : true
+            }
+        }
+
+        case GET_COMMENT_REPLY : {
+            return {
+                ...state,
+                isLoading : false,
+                isError : false,
+                commentreplies : payload
+            }
+        }
+
+        case ADD_COMMENT_REPLY : {
+            return {
+                ...state,
+                isLoading : false,
+                isError : false
             }
         }
        

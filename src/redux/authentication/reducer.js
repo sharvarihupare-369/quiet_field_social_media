@@ -1,4 +1,4 @@
-import { AUTH_LOGIN_FAILURE, AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCESS, AUTH_SIGNUP_FAILURE, AUTH_SIGNUP_REQUEST, AUTH_SIGNUP_SUCCESS, GET_ALL_USERS } from "./actionTypes"
+import { AUTH_LOGIN_FAILURE, AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCESS, AUTH_LOGOUT_FAILURE, AUTH_LOGOUT_REQUEST, AUTH_LOGOUT_SUCCESS, AUTH_SIGNUP_FAILURE, AUTH_SIGNUP_REQUEST, AUTH_SIGNUP_SUCCESS, GET_ALL_USERS } from "./actionTypes"
 
 const initialState = {
     isLoading : false,
@@ -9,7 +9,8 @@ const initialState = {
     errmsg : "",
     loginmsg:"",
     username:"",
-    allusers :[]
+    allusers :[],
+    isLoggedOut :false
 }
 
 export const reducer = (state=initialState,{type,payload}) => {
@@ -49,7 +50,7 @@ export const reducer = (state=initialState,{type,payload}) => {
           }
         }
         case AUTH_LOGIN_SUCCESS : {
-          console.log(payload)
+          // console.log(payload)
           return {
             ...state,
             isLoading:false,
@@ -75,6 +76,30 @@ export const reducer = (state=initialState,{type,payload}) => {
             isLoading : false,
             isError : false,
             allusers : payload
+          }
+        }
+        case AUTH_LOGOUT_REQUEST : {
+          return {
+            ...state,
+            isLoading : true,
+            isError : false,
+            isLoggedOut : false
+          }
+        }
+        case AUTH_LOGOUT_FAILURE : {
+          return {
+            ...state,
+            isLoading : false,
+            isError : true,
+            isLoggedOut : false
+          }
+        }
+        case AUTH_LOGOUT_SUCCESS : {
+          return {
+            ...state,
+            isLoading : false,
+            isError : false,
+            isLoggedOut : true
           }
         }
         default : {

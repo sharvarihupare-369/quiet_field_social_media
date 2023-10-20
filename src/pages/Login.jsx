@@ -11,45 +11,48 @@ import {
 } from "@chakra-ui/react";
 
 import React, { useEffect, useState} from "react";
-import { FaFacebook } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { FaFacebook, FaGoogle } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 import { Carousel } from 'react-responsive-carousel';
 import ReactDOM from 'react-dom';
 import img1 from '../Assests/appimg4.png'
+import phoneImg from '../Assests/home-phones.png'
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../redux/authentication/action";
+import { googleLogin, login } from "../redux/authentication/action";
 
 const Login = () => {
 
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
     const toast = useToast()
+    const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { loginmsg,errmsg,token,isAuth } = useSelector(store=>store.authReducer)
-    const handleLogin = (e) => {
+    const userToken = JSON.parse(localStorage.getItem("social-token")) 
+    // console.log(userToken)
+    const { loginmsg,errmsg,token,isAuth,username } = useSelector(store=>store.authReducer)
+
+    const handleLogin =  async(e) => {
          e.preventDefault()
          const userDetails = {
             email,
             password
          }
-         dispatch(login(userDetails))
+           dispatch(login(userDetails))
+           
     }
 
-    
-
     useEffect(()=>{
-      if(token){
+      if(userToken?.token){
         toast({
-          title: loginmsg,
-          description: "We've created your account for you.",
+          title: `${userToken?.username} Logged in Successfully`,
+          // description: "We've created your account for you.",
           status: 'success',
           duration: 3000,
           isClosable: true,
           position : "top"
         })
-        localStorage.setItem("social-token",token)
         setTimeout(()=>{
           navigate("/")
         },3000)
@@ -65,28 +68,19 @@ const Login = () => {
         position:"top"
       })
     }      
-    },[token,errmsg])
+    },[userToken,errmsg])
 
 
   return (
     <Box w="90%" p="10px" m="30px">
-      <Flex w="100%" justifyContent={"space-around"} alignItems={"center"}>
-        <Box w="20%">{/* carousal goes here */}
-        {/* <Carousel w="50%" style={{ backgroundImage: 'url("https://static.cdninstagram.com/images/instagram/xig/homepage/phones/home-phones.png?__makehaste_cache_breaker=HOgRclNOosk")', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-                <div>
-                    <img src="https://www.instagram.com/images/instagram/xig/homepage/screenshots/screenshot1.png?__d=www" />
-                    <p className="legend">Legend 1</p>
-                </div>
-                <div>
-                    <img src="assets/2.jpeg" />
-                    <p className="legend">Legend 2</p>
-                </div>
-                <div>
-                    <img src="assets/3.jpeg" />
-                    <p className="legend">Legend 3</p>
-                </div>
-            </Carousel> */}
-            <Image w="100%" src={img1} />
+      <Flex w="100%" alignItems={"center"}>
+        <Box w="40%">
+        {/* carousal goes here */}
+          <Image w="100%" src={phoneImg} />
+        </Box>
+        <Box position={"relative"} right={"320px"} bottom={"20px"} w="22%">
+        {/* carousal goes here */}
+          <Image w="100%" src={img1} />
         </Box>
 
         <Box w="35%"  >
@@ -129,7 +123,7 @@ const Login = () => {
           <Box mt="20px">
             <Heading size="sm">OR</Heading>
           </Box>
-          <Center p={8}>
+          <Center>
             <Button
             //   w={"full"}
             //   maxW={"md"}
@@ -142,6 +136,31 @@ const Login = () => {
               </Center>
             </Button>
           </Center>
+          <Center mt="10px" mb="10px">
+            <Button
+            //   w={"full"}
+            //   maxW={"md"}
+             w="100%"
+              // colorScheme={"google"}
+              leftIcon={<FaGoogle />}
+              // onClick={handleGoogleLogin}
+            >
+              <Center>
+                <Text>Continue with 
+                <span style={{color:"#4285F4",marginLeft:"5px"}}>G</span>
+                <span style={{color:"#DB4437"}}>o</span>
+                <span style={{color:"#F4B400"}}>o</span>
+                <span style={{color:"#4285F4"}}>g</span>
+                <span style={{color:"#0F9D58"}}>l</span>
+                <span style={{color:"#DB4437"}}>e</span>
+                </Text>
+              </Center>
+            </Button>
+          </Center>
+          {/* <GoogleLoginButton
+        onSuccess={handleGoogleLoginSuccess}
+        onFailure={handleGoogleLoginFailure}
+      /> */}
           <Text >Forgotten your Password?</Text>
         </Box>
         <Box boxShadow="rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px" mt="20px" p="20px 50px">

@@ -1,16 +1,19 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar'
 import Posts from './Posts'
-import { Box } from '@chakra-ui/react'
+import { Box, Button, Container, Heading, Input ,Image, Flex} from '@chakra-ui/react'
 
 const Home = () => {
+ 
   return (
-    <Box 
-
-    >
+    <>
+      
+    <Flex >
       <Sidebar/>
-      <Posts/>
-    </Box>
+      <Posts />
+    </Flex>
+   
+    </>
   )
 }
 
