@@ -53,7 +53,8 @@ const Posts = () => {
   const [singlePost, setSinglePost] = useState({});
   const [newComment, setNewComment] = useState("");
   const [replyId,setReplyId] = useState(null)
-
+  const profileImage = localStorage.getItem("profileImage") || ""
+  // console.log(profileImage)
   const handleLike = async (id, i) => {
     const updatedLiked = [...liked];
     if (!liked[i]) {
@@ -145,7 +146,7 @@ const Posts = () => {
                 <CardHeader>
                   <Flex spacing="4">
                     <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                      <Avatar name={name} src={name} />
+                      <Avatar objectFit={"contain"} name={name} src={profileImage} />
 
                       <Box>
                         <Heading size="md">{name}</Heading>
@@ -162,29 +163,38 @@ const Posts = () => {
                 </CardBody>
 
                 <CardFooter
-                  justify="space-between"
-                  flexWrap="wrap"
-                  sx={{
-                    "& > button": {
-                      minW: "136px",
-                    },
-                  }}
+                display={"flex"}
+                gap="10px"
+
+                  // justify="space-between"
+                  // flexWrap="wrap"
+                  // sx={{
+                  //   "& > button": {
+                  //     minW: "136px",
+                  //   },
+                  // }}
                 >
                   <Button
                     colorScheme={likedArr[ind] ? "red" : "gray"}
                     onClick={() => handleLike(post._id, ind)}
-                    leftIcon={<BiHeart />}
+                    variant="ghost"
+                    // leftIcon={}
+                    _active={'none'}
+                    _hover={'none'}
                   >
-                    {post?.likes?.length !== 0 ? post?.likes?.length : ""}{" "}
-                    {post?.likes?.length === 1 ? "Like" : "Likes"}
+                    {/* {post?.likes?.length !== 0 ? post?.likes?.length : ""}{" "}
+                    {post?.likes?.length === 1 ? "Like" : "Likes"} */}
+                    <BiHeart style={{fontSize:"27px"}} />
                   </Button>
                   <Button
-                    w="10px"
+                    // w="10px"
                     onClick={() => handleComments(post?._id)}
                     // onClick={onOpen}
-                    variant="solid"
-                    leftIcon={<FaRegComment />}
-                  ></Button>
+                    variant="ghost"
+                    // leftIcon={}
+                    _active={'none'}
+                    _hover={'none'}
+                  ><FaRegComment style={{fontSize:"21px"}}  /></Button>
 
                   <Modal
                     style={{ height: "500px" }}
@@ -230,7 +240,7 @@ const Posts = () => {
                             }
                               <Box>
                                 <Flex alignItems={"center"} gap="5px">
-                                  <Avatar  name={singlePostName} src={singlePostName}  />
+                                  <Avatar  name={singlePostName} src={profileImage}  />
                                   <Text>{singlePostName}</Text>
                                 </Flex>
                                 <Box mt="6px">

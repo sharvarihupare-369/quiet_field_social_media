@@ -15,7 +15,7 @@ export const getPosts = () => (dispatch) => {
 
 export const addnewPost = (payload,token) => (dispatch) => {
    dispatch({type:GET_REQUEST})
-   axios.post("https://socialmediabackend-w824.onrender.com/posts",payload,{
+   axios.post("https://socialmediabackend-w824.onrender.com/posts/addPost",payload,{
       headers : {
          'Authorization' : `Bearer ${token}`,
          'Content-Type': 'multipart/form-data' 

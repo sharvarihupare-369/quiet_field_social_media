@@ -19,7 +19,11 @@ const MainRoutes = () => {
     <Route path='/signup' element={<Signup/>} />
     <Route  path='/login' element={<Login />} />
     <Route path='/posts' element={<Posts/>} />
-    <Route path='/profile' element={<Profile/>} />
+    <Route path='/profile' element={
+      <PrivateRoutes>
+       <Profile/>
+    </PrivateRoutes>
+    } />
     <Route path='*'element={<h1>Page Not Found!</h1>} />
    </Routes>
   )

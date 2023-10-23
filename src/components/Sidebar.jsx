@@ -69,14 +69,20 @@ const Sidebar = () => {
   // console.log(token)
   const { isAdded } = useSelector((store) => store.postReducer);
   const { isLoggedOut } = useSelector((store) => store.authReducer);
+
   const handleUpload = () => {
-    const formData = new FormData()
-    formData.append('image',image)
-    formData.append('content',caption)
+    // const formData = new FormData()
+    // formData.append('image',image)
+    // formData.append('content',caption)
+    const formData = {
+      image,
+      content : caption
+    }
+    // console.log(formData)
     dispatch(addnewPost(formData,token?.token))
     setCaption("")
     setImage("")
-    onClose()
+    // onClose()
     
   }
 

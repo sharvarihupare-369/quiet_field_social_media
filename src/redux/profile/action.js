@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ADD_SUCCESS_PROFILE, GET_REQUEST_PROFILE, GET_SUCCESS_PROFILE } from "./actionTypes"
+import { ADD_SUCCESS_PROFILE, GET_FAILURE_PROFILE, GET_REQUEST_PROFILE, GET_SUCCESS_PROFILE } from "./actionTypes"
 
 export const getProfile = (token) => (dispatch) => {
    dispatch({type:GET_REQUEST_PROFILE})
@@ -12,6 +12,7 @@ export const getProfile = (token) => (dispatch) => {
       dispatch({type:GET_SUCCESS_PROFILE,payload:res.data.profile})
    }).catch((err)=>{
       // console.log(err)
+      dispatch({type:GET_FAILURE_PROFILE})
    })
 }
 
@@ -28,6 +29,7 @@ export const addProfile = (payload,token) => (dispatch) => {
       dispatch({type:ADD_SUCCESS_PROFILE})
    }).catch((err)=>{
       console.log(err)
+      dispatch({type:GET_FAILURE_PROFILE})
    })
  }
  

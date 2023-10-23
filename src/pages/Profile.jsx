@@ -38,7 +38,7 @@ import { addProfile, getProfile } from "../redux/profile/action";
 
 const Profile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  
   const userData = JSON.parse(localStorage.getItem("social-token")) || "";
   const token = userData?.token;
   const dispatch = useDispatch();
@@ -53,6 +53,7 @@ const Profile = () => {
     profileImage: "",
   });
   // console.log(hoverIcon);
+  // console.log(getprofile)
 
   useEffect(() => {
     // dispatch(getProfile(userData?.token))
@@ -75,13 +76,22 @@ const Profile = () => {
 
   const handleAddProfile = (e) => {
     e.preventDefault();
+    // console.log(profiledata)
     dispatch(addProfile(profiledata, token));
     dispatch(getProfile(userData?.token));
+    setProfiledata({
+    username: "",
+    bio: "",
+    location: "",
+    website: "",
+    profileImage: "",
+    })
   };
 
   // console.log(getprofile)
   // const imageUrl = `https://drab-erin-cuttlefish-wear.cyclic.app${getprofile?.profileImage}`;
   const imageUrl = `https://socialmediabackend-w824.onrender.com${getprofile?.profileImage}`;
+  localStorage.setItem("profileImage",imageUrl)
   return (
     //   <Box>
 
@@ -96,6 +106,7 @@ const Profile = () => {
       >
         <Flex  gap="50px" alignItems={"center"}>
           <Box
+            // onClick={()=>handleChangeProfileImage()}
             pos={"relative"}
             borderRadius={"50%"}
             // border="1px solid red"
@@ -129,7 +140,7 @@ const Profile = () => {
                 {getprofile.username}
               </Text>
               <Button p="0px 20px" borderRadius={"20px"} onClick={onOpen}>
-                Add Profile
+                Profile
               </Button>
             </Flex>
             <HStack m="15px 0px" gap="30px">
@@ -165,7 +176,9 @@ const Profile = () => {
                     type="text"
                     name="username"
                     value={profiledata.username}
-                    onChange={handleProfileChange}
+                    // onChange={handleProfileChange}
+                    onChange={(e) => setProfiledata({ ...profiledata, username: e.target.value })}
+                    // onChange={(e)=>setProfiledata.username(e.target.value)}
                     placeholder="Username"
                   />
                 </FormControl>
@@ -175,7 +188,9 @@ const Profile = () => {
                     type="text"
                     name="bio"
                     value={profiledata.bio}
-                    onChange={handleProfileChange}
+                    // onChange={handleProfileChange}
+                    onChange={(e) => setProfiledata({ ...profiledata, bio: e.target.value })}
+                    // onChange={(e)=>setProfiledata.bio(e.target.value)}
                     placeholder="Bio"
                   />
                 </FormControl>
@@ -185,7 +200,9 @@ const Profile = () => {
                     type="text"
                     name="location"
                     value={profiledata.location}
-                    onChange={handleProfileChange}
+                    // onChange={handleProfileChange}
+                    onChange={(e) => setProfiledata({ ...profiledata, location: e.target.value })}
+                    // onChange={(e)=>setProfiledata.website(e.target.value)}
                     placeholder="Location"
                   />
                 </FormControl>
@@ -195,18 +212,22 @@ const Profile = () => {
                     type="text"
                     name="website"
                     value={profiledata.website}
-                    onChange={handleProfileChange}
+                    // onChange={handleProfileChange}
+                    onChange={(e) => setProfiledata({ ...profiledata, website: e.target.value })}
+                    // onChange={(e)=>setProfiledata.website(e.target.value)}
                     placeholder="Website"
                   />
                 </FormControl>
 
+                {/* <Input type="file" accept="image/*"  onChange={(e)=>setImage(e.target.files[0])} /> */}
                 <FormControl mt={4}>
                   <Input
                     type="file"
                     name="profileImage"
                     accept="profileImage/*"
-                    value={profiledata.profileImage}
-                    onChange={handleProfileChange}
+                    // value={profiledata.profileImage}
+                    // onChange={(e)=>setProfiledata.profileImage(e.target.files[0])}
+                    onChange={(e) => setProfiledata({ ...profiledata, profileImage: e.target.files[0] })}
                     placeholder="ProfileImage"
                   />
                 </FormControl>
