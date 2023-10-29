@@ -3,7 +3,8 @@ import { ADD_POST, DELETE_POST, GET_FAILURE, GET_PROFILE_POSTS, GET_REQUEST, GET
 
 export const getPosts = () => (dispatch) => {
      dispatch({type:GET_REQUEST})
-     axios.get('https://socialmediabackend-w824.onrender.com/posts').then((res)=>{
+   //   axios.get('https://socialmediabackend-w824.onrender.com/posts').then((res)=>{
+     axios.get('https://rose-zealous-quail.cyclic.app/posts').then((res)=>{
       //   console.log(res.data.posts)
         dispatch({type:GET_SUCCESS,payload:res.data.posts})
      }).catch((err)=>{
@@ -15,23 +16,25 @@ export const getPosts = () => (dispatch) => {
 
 export const addnewPost = (payload,token) => (dispatch) => {
    dispatch({type:GET_REQUEST})
-   axios.post("https://socialmediabackend-w824.onrender.com/posts/addPost",payload,{
+   // axios.post("https://socialmediabackend-w824.onrender.com/posts/addPost",payload,{
+   axios.post("https://rose-zealous-quail.cyclic.app/posts/addPost",payload,{
       headers : {
          'Authorization' : `Bearer ${token}`,
          'Content-Type': 'multipart/form-data' 
       }
    }).then((res)=>{
-      // console.log(res)
+      console.log(res)
       dispatch({type:ADD_POST})
    }).catch((err)=>{
-      //   console.log(err)
+        console.log(err)
         dispatch({type:GET_FAILURE})
    })
 }
 
 export const postLike = (id,token) => (dispatch) => {
    dispatch({type:GET_REQUEST})
-  return axios.post(`https://socialmediabackend-w824.onrender.com/posts/like/${id}`,null,{
+//   return axios.post(`https://socialmediabackend-w824.onrender.com/posts/like/${id}`,null,{
+  return axios.post(`https://rose-zealous-quail.cyclic.app/posts/like/${id}`,null,{
       headers : {
          'Authorization' : `Bearer ${token}`
       }
@@ -46,7 +49,8 @@ export const postLike = (id,token) => (dispatch) => {
 
 export const postUnLike = (id,token) => (dispatch) => {
    dispatch({type:GET_REQUEST})
-  return axios.post(`https://socialmediabackend-w824.onrender.com/posts/unlike/${id}`,null,{
+//   return axios.post(`https://socialmediabackend-w824.onrender.com/posts/unlike/${id}`,null,{
+  return axios.post(`https://rose-zealous-quail.cyclic.app/posts/unlike/${id}`,null,{
       headers : {
          'Authorization' : `Bearer ${token}`
       }
@@ -63,7 +67,8 @@ export const postUnLike = (id,token) => (dispatch) => {
 export const getparticularPosts = (token) => (dispatch) => {
    // console.log(token)
    dispatch({type:GET_REQUEST})
-   axios.get("https://socialmediabackend-w824.onrender.com/posts/user",{
+   // axios.get("https://socialmediabackend-w824.onrender.com/posts/user",{
+   axios.get("https://rose-zealous-quail.cyclic.app/posts/user",{
       headers : {
          'Authorization' : `Bearer ${token}`
       }}).then((res)=>{
@@ -77,7 +82,8 @@ export const getparticularPosts = (token) => (dispatch) => {
 
 export const deletePost = (id,token) => (dispatch) => {
    dispatch({type:GET_REQUEST})
-   axios.delete(`https://socialmediabackend-w824.onrender.com/posts/delete/${id}`,{
+   // axios.delete(`https://socialmediabackend-w824.onrender.com/posts/delete/${id}`,{
+   axios.delete(`https://rose-zealous-quail.cyclic.app/posts/delete/${id}`,{
       headers : {
          'Authorization' : `Bearer ${token}`
       }}).then((res)=>{

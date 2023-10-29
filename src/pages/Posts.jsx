@@ -139,7 +139,8 @@ const Posts = () => {
           }
 
           {/* const imageUrl = `https://drab-erin-cuttlefish-wear.cyclic.app${post?.image}`; */}
-          const imageUrl = `https://socialmediabackend-w824.onrender.com${post?.image}`;
+          {/* const imageUrl = `https://socialmediabackend-w824.onrender.com${post?.image}`; */}
+          const imageUrl = `https://rose-zealous-quail.cyclic.app${post?.image}`;
           return (
             <Flex key={post._id} justifyContent={"center"}>
               <Card mt="20px" maxW="md">

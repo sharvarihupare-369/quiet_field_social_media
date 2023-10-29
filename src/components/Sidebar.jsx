@@ -59,7 +59,7 @@ const LinkItems = [
 const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast()
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("")
   const [caption,setCaption] = useState("")
   const [file,setFile] = useState()
   const [logout,setLogout] = useState(false)
@@ -71,13 +71,13 @@ const Sidebar = () => {
   const { isLoggedOut } = useSelector((store) => store.authReducer);
 
   const handleUpload = () => {
-    // const formData = new FormData()
-    // formData.append('image',image)
-    // formData.append('content',caption)
-    const formData = {
-      image,
-      content : caption
-    }
+    const formData = new FormData()
+    formData.append('image',image)
+    formData.append('content',caption)
+    // const formData = {
+    //   image,
+    //   content : caption
+    // }
     // console.log(formData)
     dispatch(addnewPost(formData,token?.token))
     setCaption("")
@@ -218,6 +218,7 @@ const Sidebar = () => {
               <FormLabel>Post</FormLabel>
            
               <Input type="file" accept="image/*"  onChange={(e)=>setImage(e.target.files[0])} />
+              {/* <Input type="file" accept='.jpg,.png,.jpeg,.avif' onChange={(e)=>setImage(e.target.files[0])} /> */}
             </FormControl>
            
             <FormControl mt={4}>
