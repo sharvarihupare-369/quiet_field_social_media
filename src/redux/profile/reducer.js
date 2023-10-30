@@ -1,11 +1,12 @@
-import { ADD_SUCCESS_PROFILE, DELETE_SUCCESS_PROFILE, GET_FAILURE_PROFILE,  GET_REQUEST_PROFILE, GET_SUCCESS_PROFILE } from "./actionTypes"
+import { ADD_SUCCESS_PROFILE, DELETE_SUCCESS_PROFILE, GET_FAILURE_PROFILE,  GET_REQUEST_PROFILE, GET_SUCCESS_PROFILE, UPDATE_SUCCESS_PROFILEPIC } from "./actionTypes"
 
 const initialState = {
     isLoading : false,
     isError : false,
     getprofile : {},
     isProfileAdded : false,
-    isProfileDeleted : false
+    isProfileDeleted : false,
+    isUpdatePic : false
 }
 
 export const reducer = (state=initialState,{type,payload}) => {
@@ -16,7 +17,8 @@ export const reducer = (state=initialState,{type,payload}) => {
                 isLoading : true,
                 isError : false,
                 isProfileAdded : false,
-                isProfileDeleted : false
+                isProfileDeleted : false,
+                isUpdatePic : false
             }
         }
 
@@ -55,6 +57,15 @@ export const reducer = (state=initialState,{type,payload}) => {
                 isLoading : false,
                 isError : false,
                 isProfileDeleted : true
+            }
+        }
+
+        case UPDATE_SUCCESS_PROFILEPIC : {
+            return {
+                ...state,
+                isLoading :false,
+                isError:false,
+                isUpdatePic : true,
             }
         }
 

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ADD_SUCCESS_PROFILE, GET_FAILURE_PROFILE, GET_REQUEST_PROFILE, GET_SUCCESS_PROFILE } from "./actionTypes"
+import { ADD_SUCCESS_PROFILE, GET_FAILURE_PROFILE, GET_REQUEST_PROFILE, GET_SUCCESS_PROFILE, UPDATE_SUCCESS_PROFILEPIC } from "./actionTypes"
 
 export const getProfile = (token) => (dispatch) => {
    dispatch({type:GET_REQUEST_PROFILE})
@@ -25,11 +25,27 @@ export const addProfile = (payload,token) => (dispatch) => {
          'Content-Type': 'multipart/form-data'
       }
    }).then((res)=>{
-      console.log(res)
+      // console.log(res)
       dispatch({type:ADD_SUCCESS_PROFILE})
    }).catch((err)=>{
-      console.log(err)
+      // console.log(err)
       dispatch({type:GET_FAILURE_PROFILE})
    })
  }
  
+
+ export const updateProfilePic = (payload,token) => (dispatch) => {
+   dispatch({type:GET_REQUEST_PROFILE})
+   axios.patch("https://socialmediabackend-w824.onrender.com/profile/updateProfilePic",payload,{
+      headers : {
+         'Authorization' : `Bearer ${token}`,
+         'Content-Type': 'multipart/form-data'
+      }
+   }).then((res)=>{
+      // console.log(res)
+      dispatch({type:UPDATE_SUCCESS_PROFILEPIC})
+   }).catch((err)=>{
+      // console.log(err)
+      dispatch({type:GET_FAILURE_PROFILE})
+   })
+ }

@@ -22,7 +22,7 @@ import {
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deletePost,
@@ -34,7 +34,7 @@ import { BiHeart } from "react-icons/bi";
 import { FiDelete, FiEdit } from "react-icons/fi";
 import { BsFillCameraFill } from "react-icons/bs";
 import Sidebar from "../components/Sidebar";
-import { addProfile, getProfile } from "../redux/profile/action";
+import { addProfile, getProfile, updateProfilePic } from "../redux/profile/action";
 
 const Profile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -43,14 +43,15 @@ const Profile = () => {
   const token = userData?.token;
   const dispatch = useDispatch();
   const { profileposts } = useSelector((store) => store.postReducer);
-  const { getprofile } = useSelector((store) => store.profileReducer);
+  const { getprofile,isUpdatePic } = useSelector((store) => store.profileReducer);
   const [hoverIcon, setHoverIcon] = useState(false);
+  const [profileimage,setProfileimage] = useState("")
   const [profiledata, setProfiledata] = useState({
     username: "",
     bio: "",
     location: "",
     website: "",
-    profileImage: "",
+    // profileImage: "",
   });
   // console.log(hoverIcon);
   // console.log(getprofile)
@@ -70,9 +71,38 @@ const Profile = () => {
     dispatch(getProfile(userData?.token));
   }, []);
 
-  const handleProfileChange = (e) => {
-    setProfiledata({ ...profiledata, [e.target.name]: e.target.value });
+  const handleProfileImageChange = () => {
+  
+    // document.getElementById('fileInput').click();
+    // if(profileimage){
+      // const formdata = new FormData()
+      // formdata.append("profileImage",profileimage)
+      const profileImageObj = {
+        profileImage : profileimage,
+      }
+      dispatch(updateProfilePic(profileImageObj,token))
+
+    
+      // console.log(profileImageObj)
+    // }
+
+  }
+
+  useEffect(()=>{
+    dispatch(getProfile(token));
+  },[isUpdatePic])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const profileImageObj = {
+      profileImage : profileimage,
+    }
+    console.log(profileImageObj)
+    dispatch(updateProfilePic(profileImageObj,token))
+    // window.location.reload()
+    dispatch(getPosts());
   };
+  // console.log(profileimage)
 
   const handleAddProfile = (e) => {
     e.preventDefault();
@@ -88,15 +118,23 @@ const Profile = () => {
     })
   };
 
+  useLayoutEffect(()=>{
+     if(profileimage){
+      handleProfileImageChange()
+     }
+  },[profileimage])
+
   // console.log(getprofile)
   // const imageUrl = `https://drab-erin-cuttlefish-wear.cyclic.app${getprofile?.profileImage}`;
   const imageUrl = `https://socialmediabackend-w824.onrender.com${getprofile?.profileImage}`;
-  localStorage.setItem("profileImage",imageUrl)
+  // localStorage.setItem("profileImage",imageUrl)
   return (
     //   <Box>
 
     <Flex justifyContent={"space-between"}>
       <Sidebar />
+    
+
       <Box
         w="80%"
         justifyContent={"center"}
@@ -104,15 +142,19 @@ const Profile = () => {
         right={0}
         p="20px"
       >
+
         <Flex  gap="50px" alignItems={"center"}>
+       
           <Box
-            // onClick={()=>handleChangeProfileImage()}
+            // onClick={handleProfileImageChange} 
+            cursor={"pointer"}
             pos={"relative"}
             borderRadius={"50%"}
             // border="1px solid red"
             onMouseEnter={() => setHoverIcon(true)}
             onMouseLeave={() => setHoverIcon(false)}
           >
+         
             <Avatar
               _hover={{ opacity: "0.3" }}
               size="2xl"
@@ -133,7 +175,18 @@ const Profile = () => {
             ) : (
               ""
             )}
+          <Input type="file" style={{position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          opacity: 0,
+          cursor: "pointer"}} onChange={(e)=>setProfileimage(e.target.files[0])} accept="profileImage/*"  />
+          {/* <form onSubmit={handleSubmit}>
+          <Button  display={"none"}   type="submit"></Button>
+         </form> */}
           </Box>
+         
           <Box>
             <Flex w="100%" justifyContent={"space-between"}>
               <Text textAlign={"left"} fontWeight={600} fontSize={"20px"}>
@@ -220,17 +273,17 @@ const Profile = () => {
                 </FormControl>
 
                 {/* <Input type="file" accept="image/*"  onChange={(e)=>setImage(e.target.files[0])} /> */}
-                <FormControl mt={4}>
-                  <Input
-                    type="file"
-                    name="profileImage"
-                    accept="profileImage/*"
-                    // value={profiledata.profileImage}
-                    // onChange={(e)=>setProfiledata.profileImage(e.target.files[0])}
-                    onChange={(e) => setProfiledata({ ...profiledata, profileImage: e.target.files[0] })}
-                    placeholder="ProfileImage"
-                  />
-                </FormControl>
+                {/* <FormControl mt={4}> */}
+                  {/* <Input */}
+                    {/* type="file" */}
+                    {/* name="profileImage" */}
+                    {/* accept="profileImage/*" */}
+                    {/* value={profiledata.profileImage} */}
+                    {/* // onChange={(e)=>setProfiledata.profileImage(e.target.files[0])} */}
+                    {/* onChange={(e) => setProfiledata({ ...profiledata, profileImage: e.target.files[0] })} */}
+                    {/* placeholder="ProfileImage" */}
+                  {/* /> */}
+                {/* </FormControl> */}
               </ModalBody>
 
               <ModalFooter>
