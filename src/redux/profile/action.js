@@ -33,8 +33,7 @@ export const addProfile = (payload,token) => (dispatch) => {
    })
  }
  
-
- export const updateProfilePic = (payload,token) => (dispatch) => {
+  export const updateProfilePic = (payload,token) => (dispatch) => {
    dispatch({type:GET_REQUEST_PROFILE})
    axios.patch("https://socialmediabackend-w824.onrender.com/profile/updateProfilePic",payload,{
       headers : {
