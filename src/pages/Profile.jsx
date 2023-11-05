@@ -34,11 +34,10 @@ import { BiHeart } from "react-icons/bi";
 import { FiDelete, FiEdit } from "react-icons/fi";
 import { BsFillCameraFill } from "react-icons/bs";
 import Sidebar from "../components/Sidebar";
-import { addProfile, getProfile, updateProfilePic } from "../redux/profile/action";
+import { addProfile, addProfilePic, getProfile, updateProfile, updateProfilePic } from "../redux/profile/action";
 
 const Profile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
   const userData = JSON.parse(localStorage.getItem("social-token")) || "";
   const token = userData?.token;
   const dispatch = useDispatch();
@@ -46,12 +45,13 @@ const Profile = () => {
   const { getprofile,isUpdatePic } = useSelector((store) => store.profileReducer);
   const [hoverIcon, setHoverIcon] = useState(false);
   const [profileimage,setProfileimage] = useState("")
+  const [mode,setMode] = useState("add")
   const [profiledata, setProfiledata] = useState({
     username: "",
     bio: "",
     location: "",
     website: "",
-    // profileImage: "",
+    profileImage: "",
   });
   // console.log(hoverIcon);
   // console.log(getprofile)
@@ -86,38 +86,73 @@ const Profile = () => {
       // console.log(profileImageObj)
     // }
 
+  
   }
 
+
+
+  useEffect(()=>{
+    dispatch(getProfile(userData?.token))
+  },[])
+ 
   useEffect(()=>{
     dispatch(getProfile(token));
   },[isUpdatePic])
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const profileImageObj = {
-      profileImage : profileimage,
-    }
-    console.log(profileImageObj)
-    dispatch(updateProfilePic(profileImageObj,token))
-    // window.location.reload()
-    dispatch(getPosts());
-  };
-  // console.log(profileimage)
+  useEffect(()=>{
+   if(mode === "edit"){
+    setProfiledata({
+      username : getprofile?.username || "",
+      bio : getprofile?.bio || "",
+      location : getprofile?.location || "",
+      website : getprofile?.website || "",
+      profileImage : getprofile?.profileImage || ""
 
-  const handleAddProfile = (e) => {
+    })
+   }
+  },[mode,getprofile])
+
+ 
+
+  // const handleAddProfile = (e) => {
+  //   e.preventDefault();
+  //   // console.log(profiledata)
+  //   dispatch(addProfile(profiledata, token));
+  //   dispatch(getProfile(userData?.token));
+  //   setProfiledata({
+  //   username: "",
+  //   bio: "",
+  //   location: "",
+  //   website: "",
+  //   profileImage: "",
+  //   })
+  // };
+  // console.log(profiledata)
+  // console.log(getprofile)
+  const handleUpdateProfile = (e) => {
     e.preventDefault();
     // console.log(profiledata)
-    dispatch(addProfile(profiledata, token));
-    dispatch(getProfile(userData?.token));
+     if(mode == "edit"){
+      dispatch(updateProfile(profiledata, token,  getprofile._id )).then(()=>{
+        dispatch(getProfile(userData?.token));
+      }).catch((err)=>console.log(err))
+     }else{
+       dispatch(addProfile(profiledata, token)).then(()=>{
+        dispatch(getProfile(userData?.token));
+      }).catch((err)=>console.log(err))
+     }
     setProfiledata({
     username: "",
     bio: "",
     location: "",
     website: "",
-    profileImage: "",
+    // profileImage: "",
     })
-  };
+  }
 
+  
+
+  
   useLayoutEffect(()=>{
      if(profileimage){
       handleProfileImageChange()
@@ -192,9 +227,18 @@ const Profile = () => {
               <Text textAlign={"left"} fontWeight={600} fontSize={"20px"}>
                 {getprofile.username}
               </Text>
-              <Button p="0px 20px" borderRadius={"20px"} onClick={onOpen}>
+              {/* <Button p="0px 20px" borderRadius={"20px"} onClick={onOpen}>
                 Profile
-              </Button>
+              </Button> */}
+              {getprofile.username || getprofile.bio ? (
+                <Button  p="0px 20px" borderRadius={"20px"} onClick={() => { onOpen(); setMode("edit"); }}>
+                  Edit Profile
+                </Button>
+              ) : (
+                <Button p="0px 20px" borderRadius={"20px"} onClick={() => { onOpen(); setMode("add"); }}>
+                  Add Profile
+                </Button>
+              )}
             </Flex>
             <HStack m="15px 0px" gap="30px">
               <Text fontWeight={600} fontSize={"18px"}>
@@ -220,9 +264,9 @@ const Profile = () => {
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Add your profile</ModalHeader>
+            <ModalHeader>{mode == "add" ? "Add your profile" : "Update your profile"}</ModalHeader>
             <ModalCloseButton />
-            <form onSubmit={handleAddProfile}>
+            <form onSubmit={handleUpdateProfile}>
               <ModalBody pb={6}>
                 <FormControl>
                   <Input
@@ -272,23 +316,21 @@ const Profile = () => {
                   />
                 </FormControl>
 
-                {/* <Input type="file" accept="image/*"  onChange={(e)=>setImage(e.target.files[0])} /> */}
-                {/* <FormControl mt={4}> */}
-                  {/* <Input */}
-                    {/* type="file" */}
-                    {/* name="profileImage" */}
-                    {/* accept="profileImage/*" */}
-                    {/* value={profiledata.profileImage} */}
-                    {/* // onChange={(e)=>setProfiledata.profileImage(e.target.files[0])} */}
-                    {/* onChange={(e) => setProfiledata({ ...profiledata, profileImage: e.target.files[0] })} */}
-                    {/* placeholder="ProfileImage" */}
-                  {/* /> */}
-                {/* </FormControl> */}
+                <FormControl mt={4}>
+                  <Input
+                    type="file"
+                    name="profileImage"
+                    // value = {getprofile.profileImage ? getprofile.profileImage : ""}
+                    onChange={(e)=>setProfiledata({...profiledata, profileImage : e.target.files[0]})} 
+                    accept="profileImage/*"
+                    placeholder="Image"
+                  />
+                </FormControl>
               </ModalBody>
 
               <ModalFooter>
-                <Button type="submit" bg="#212121" color={"white"} mr={3}>
-                  Add
+                 <Button type="submit"  bg="#212121" color={"white"} mr={3}>
+                  {getprofile.username || getprofile.bio ? "Edit" : "Add"}
                 </Button>
                 {/* <Button onClick={onClose}>Cancel</Button> */}
               </ModalFooter>

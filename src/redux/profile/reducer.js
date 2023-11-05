@@ -1,12 +1,15 @@
-import { ADD_SUCCESS_PROFILE, DELETE_SUCCESS_PROFILE, GET_FAILURE_PROFILE,  GET_REQUEST_PROFILE, GET_SUCCESS_PROFILE, UPDATE_SUCCESS_PROFILEPIC } from "./actionTypes"
+import { ADD_SUCCESS_PROFILE, ADD_SUCCESS_PROFILEPIC, DELETE_SUCCESS_PROFILE, GET_ALL_SUCCESS_PROFILE, GET_FAILURE_PROFILE,  GET_REQUEST_PROFILE, GET_SUCCESS_PROFILE, UPDATE_SUCCESS_PROFILE, UPDATE_SUCCESS_PROFILEPIC } from "./actionTypes"
 
 const initialState = {
     isLoading : false,
     isError : false,
     getprofile : {},
+    allusersProfile : [],
     isProfileAdded : false,
     isProfileDeleted : false,
-    isUpdatePic : false
+    isAddedPic : false,
+    isUpdatePic : false,
+    isUpdatedProfile : false,
 }
 
 export const reducer = (state=initialState,{type,payload}) => {
@@ -18,7 +21,9 @@ export const reducer = (state=initialState,{type,payload}) => {
                 isError : false,
                 isProfileAdded : false,
                 isProfileDeleted : false,
-                isUpdatePic : false
+                isUpdatePic : false,
+                isUpdatedProfile : false,
+                isAddedPic : false,
             }
         }
 
@@ -39,6 +44,16 @@ export const reducer = (state=initialState,{type,payload}) => {
                 isLoading : false,
                 isError : false,
                 getprofile : payload
+            }
+        }
+
+        case  GET_ALL_SUCCESS_PROFILE: {
+            // console.log(payload)
+            return {
+                ...state,
+                isLoading : false,
+                isError : false,
+                allusersProfile : payload
             }
         }
      
@@ -68,7 +83,21 @@ export const reducer = (state=initialState,{type,payload}) => {
                 isUpdatePic : true,
             }
         }
+        case UPDATE_SUCCESS_PROFILE : {
+            return {
+                ...state,
+                isLoading:false,
+                isUpdatedProfile : true
+            }
+        }
 
+        case ADD_SUCCESS_PROFILEPIC : {
+            return  {
+              ...state,
+              isLoading : false,
+              isAddedPic : false,
+            }
+        }
        
         default : {
             return state

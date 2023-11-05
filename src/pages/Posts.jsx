@@ -32,6 +32,7 @@ import {
 } from "../redux/comments/action";
 import { FaRegComment } from "react-icons/fa";
 import { AddIcon } from "@chakra-ui/icons";
+import { allProfiles } from "../redux/profile/action";
 
 const Posts = () => {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ const Posts = () => {
     new Array(posts?.length).fill(false);
   const [likedArr, setLikedArr] = useState(liked);
   const { allusers } = useSelector((store) => store.authReducer);
+  const { allusersProfile } = useSelector((store) => store.profileReducer);
   const [replyInput, setReplyInput] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const [reply,setReply] = useState(false)
@@ -53,8 +55,26 @@ const Posts = () => {
   const [singlePost, setSinglePost] = useState({});
   const [newComment, setNewComment] = useState("");
   const [replyId,setReplyId] = useState(null)
+  const [profileimage,setProfileimage] = useState("")
   const profileImage = localStorage.getItem("profileImage") || ""
   // console.log(profileImage)
+
+
+  // console.log(allusersProfile)
+  // console.log(posts)
+
+  useEffect(()=>{
+    posts?.map((el)=>{
+      allusersProfile?.map((element)=>{
+        if(element.user == el.author._id){
+          setProfileimage(element.profileImage)
+        } 
+      })
+    })
+  
+  },[])
+  // console.log(profileimage)
+
   const handleLike = async (id, i) => {
     const updatedLiked = [...liked];
     if (!liked[i]) {
@@ -74,9 +94,15 @@ const Posts = () => {
     await dispatch(getPosts());
   };
 
+  
+
   useEffect(() => {
     dispatch(getAllUsers());
   }, [token?.token]);
+
+  useEffect(()=>{
+    dispatch(allProfiles())
+  },[])
 
   useEffect(() => {
     dispatch(getPosts());
@@ -140,6 +166,7 @@ const Posts = () => {
 
           {/* const imageUrl = `https://drab-erin-cuttlefish-wear.cyclic.app${post?.image}`; */}
           const imageUrl = `https://socialmediabackend-w824.onrender.com${post?.image}`;
+          const profileImageUrl = `https://socialmediabackend-w824.onrender.com${profileimage}`;
           {/* const imageUrl = `https://rose-zealous-quail.cyclic.app${post?.image}`; */}
           return (
             <Flex key={post._id} justifyContent={"center"}>
@@ -241,7 +268,7 @@ const Posts = () => {
                             }
                               <Box>
                                 <Flex alignItems={"center"} gap="5px">
-                                  <Avatar  name={singlePostName} src={profileImage}  />
+                                  <Avatar  name={singlePostName}  src={profileImageUrl} />
                                   <Text>{singlePostName}</Text>
                                 </Flex>
                                 <Box mt="6px">
@@ -261,6 +288,7 @@ const Posts = () => {
                                           mr="5px"
                                           size={"sm"}
                                           name={el.name}
+                                       
                                         />
 
                                         <Text
