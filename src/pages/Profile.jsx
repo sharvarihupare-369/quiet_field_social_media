@@ -236,7 +236,8 @@ const Profile = () => {
                 </Button>
               ) : (
                 <Button p="0px 20px" borderRadius={"20px"} onClick={() => { onOpen(); setMode("add"); }}>
-                  Add Profile
+                  
+                  Add Profile 
                 </Button>
               )}
             </Flex>
