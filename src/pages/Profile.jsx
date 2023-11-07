@@ -142,11 +142,12 @@ const Profile = () => {
       }).catch((err)=>console.log(err))
      }
     setProfiledata({
-    username: "",
-    bio: "",
-    location: "",
-    website: "",
-    // profileImage: "",
+      username : "",
+      bio : "",
+      location : "",
+      website : "",
+      // profileImage : ""
+    
     })
   }
 
